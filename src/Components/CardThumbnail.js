@@ -8,7 +8,7 @@ export default function MTGCard(props) {
     console.log(props.card);
 
     {/* SET CARD IMAGE TO A GIVEN CARD URL. IF THERE IS NO IMAGE, SET IMAGE TO DEFAULT BACK */}
-    if(!props.card.imageUrl){
+    if(props.card.imageUrl === undefined){
         props.card.imageUrl = "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=0&type=card";
     }
 

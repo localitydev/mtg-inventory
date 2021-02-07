@@ -63,7 +63,7 @@ function App() {
 
                         return(
                             <div className="col-3" key={index} style={{paddingBottom: 20+'px'}}>
-                                <CardThumbnail setCard={card}/>
+                                <CardThumbnail card={card}/>
                             </div>
                         )                                
                     } )
