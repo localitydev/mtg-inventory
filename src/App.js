@@ -30,11 +30,6 @@ function App() {
         mtg.card.where({name: searchText}).then(cards => setSearchResults(cards));
     };
 
-    mtg.set.find("ICE")
-    .then(result => {
-        console.log(result);
-    });
-
     return (
         <div className="App">
             
