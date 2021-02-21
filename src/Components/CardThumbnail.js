@@ -9,10 +9,7 @@ class CardThumbnail extends Component {
         this.state = {
           set: ''
         }
-    }
 
-    componentDidMount(){
-        /* SET CARD IMAGE TO A GIVEN CARD URL. IF THERE IS NO IMAGE, SET IMAGE TO DEFAULT BACK */
         if(this.props.card.imageUrl === undefined){
             this.props.card.imageUrl = "https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=0&type=card";
         }
@@ -24,7 +21,7 @@ class CardThumbnail extends Component {
             });
             console.log(result.set.name);
         });
-    };
+    }
 
     render(){
         return(
@@ -37,7 +34,7 @@ class CardThumbnail extends Component {
                 </div>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">Rarity: {this.props.card.rarity}</li>
-                    <li className="list-group-item">Set: {this.set}</li>
+                    <li className="list-group-item">Set: {this.state.set}</li>
                     <li className="list-group-item">Artist: {this.props.card.artist}</li>
                 </ul>
             </div>
@@ -46,5 +43,4 @@ class CardThumbnail extends Component {
         
 }
 
-export default CardThumbnail; 
-
+export default CardThumbnail;

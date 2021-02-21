@@ -9,6 +9,7 @@ const mtg = require('mtgsdk');
 function App() {
 
     const [searchText, setSearchText]     = useState("");         // Inputted Card name
+    const [setText, setSetText]     = useState("");         // Inputted Set name
     const [searchResults, setSearchResults] = useState([]);
 
     // Run when input is changed
@@ -19,6 +20,12 @@ function App() {
         setSearchText(e.target.value);
     };
 
+    // Setting the SET text to search with
+    const onSetText = function(e){
+        console.log(e.target.value);
+        setSetText(e.target.value);
+    };
+
 
     // Queuing the MTG Database
     const searchForCard = function(e){
@@ -27,7 +34,13 @@ function App() {
 
         setSearchResults([]);
 
-        mtg.card.where({name: searchText}).then(cards => setSearchResults(cards));
+        mtg.card.where({
+            name: searchText,
+            setName: setText
+        }).then(cards => {
+            console.log("Search Cards");
+            setSearchResults(cards);
+        });
     };
 
     return (
@@ -46,6 +59,10 @@ function App() {
                             <div className="form-group mb-2">
                                 <label htmlFor="cardName">Card Name</label>
                                 <input type="text" className="form-control" onChange={(e) => {onInputText(e)}} id="cardName" />
+                            </div>
+                            <div className="form-group mb-2">
+                                <label htmlFor="cardName">Set Name</label>
+                                <input type="text" className="form-control" onChange={(e) => {onSetText(e)}} id="setName" />
                             </div>
                             <button type="submit" className="btn btn-primary mb-2">Search</button>
                         </form>
