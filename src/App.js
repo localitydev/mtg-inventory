@@ -1,3 +1,5 @@
+// Set environment variables for web app in the .env file.
+
 import './App.css';
 import { useState } from 'react';
 
@@ -73,11 +75,17 @@ function App() {
                 {
                     searchResults.map( (card, index) => {
 
-                        return(
-                            <div className="col-3" key={index} style={{paddingBottom: 20+'px'}}>
-                                <CardThumbnail card={card}/>
-                            </div>
-                        )                                
+                        if(card.imageUrl !== undefined){
+                            return(
+                                <div className="col-3" key={index} style={{paddingBottom: 20+'px'}}>
+                                    <CardThumbnail card={card}/>
+                                </div>
+                            )
+                        }else{
+                            return("");
+                        }
+
+                                                        
                     } )
                 }
                 </div>
