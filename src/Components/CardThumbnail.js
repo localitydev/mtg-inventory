@@ -44,7 +44,7 @@ class CardThumbnail extends Component {
         .eachPage(function page(cards, fetchNextPage) {
             // This function (`page`) will get called for each page of cards.
             
-            console.log("Cards found: ", cards.length);
+            console.log("Cards found: ", cards);
 
             if(cards.length !== 0){
                 // Update card quantity
@@ -65,22 +65,28 @@ class CardThumbnail extends Component {
             }else{
                 console.log("Add this card to inventory:", listedCard);
 
+                // Value of the card's color.
+                var listedCardColors = (listedCard.colors) ? listedCard.colors.join(",") : "" ;
+                var listedCardColorIdentity = (listedCard.colorIdentity) ? listedCard.colorIdentity.join(",") : "" ;
+                var listedCardTypes = (listedCard.types) ? listedCard.types.join(",") : "" ;
+
                 // Add card to inventory
                 base('Inventory').create([
                     {
                       "fields": {
-                        "name": listedCard.name,
-                        "manaCost":listedCard.manaCost,
-                        "colorIdentity": listedCard.colorIdentity.join(","),
-                        "setName": listedCard.setName,
-                        "colors": listedCard.colors.join(","),
-                        "type": listedCard.type,
-                        "types": listedCard.types.join(","),
                         "artist": listedCard.artist,
-                        "setID": listedCard.set,
-                        "multiverseid": listedCard.multiverseid,
+                        "cmc": listedCard.cmc,
+                        "colors": listedCardColors,
+                        "colorIdentity": listedCardColorIdentity,
                         "imageUrl": listedCard.imageUrl,
-                        "cmc": listedCard.cmc
+                        "multiverseid": listedCard.multiverseid,
+                        "manaCost":listedCard.manaCost,
+                        "name": listedCard.name,
+                        "quantity": 1,
+                        "setID": listedCard.set,
+                        "setName": listedCard.setName,
+                        "type": listedCard.type,
+                        "types": listedCardTypes
                       }
                     }
                   ], function(err, records) {
@@ -117,19 +123,19 @@ class CardThumbnail extends Component {
 
     render(){
         return(
-            <div className="card">
-                <img className="img-fluid card-img-top" src={this.props.card.imageUrl} alt="" />
-                <div className="card-body">
-                    <h5 className="card-title">{this.props.card.name}</h5>
-                    {/* <p className="card-text">{this.props.card.originalText}</p> */}
-                    <button className="btn btn-primary" onClick={this.addInventory}>Add Card</button>
-                </div>
-                <ul className="list-group list-group-flush">
-                    <li className="list-group-item">Rarity: {this.props.card.rarity}</li>
-                    <li className="list-group-item">Set: {this.state.set}</li>
-                    <li className="list-group-item">Artist: {this.props.card.artist}</li>
-                </ul>
-            </div>
+          <div className="card">
+              <img className="img-fluid card-img-top" src={this.props.card.imageUrl} alt="" />
+              <div className="card-body">
+                  <h5 className="card-title">{this.props.card.name}</h5>
+                  {/* <p className="card-text">{this.props.card.originalText}</p> */}
+                  <button className="btn btn-primary" onClick={this.addInventory}>Add Card</button>
+              </div>
+              <ul className="list-group list-group-flush">
+                  <li className="list-group-item">Rarity: {this.props.card.rarity}</li>
+                  <li className="list-group-item">Set: {this.state.set}</li>
+                  <li className="list-group-item">Artist: {this.props.card.artist}</li>
+              </ul>
+          </div>
         )
     }
         
