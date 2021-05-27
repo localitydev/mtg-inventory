@@ -11,11 +11,15 @@ class CardThumbnail extends Component {
     constructor(props){
         super(props);
         this.state = {
-          set: ''
+          set: '',
+          adding: false
         }
     }
 
     addInventory = () => {
+        // Set state of adding to true
+        this.setState({adding: true});
+
         /** Additional notes - problem solving notes for Notion
          * - concat card identity with `,` and store as one string
          * - concat card colors with `,` and store as one string
@@ -56,11 +60,16 @@ class CardThumbnail extends Component {
                       }
                     }
                   ], function(err, records) {
+                    this.setState({
+                      adding: false
+                    });
+
                     if (err) {
-                      console.error(err);
+                      console.error("Update Card Error.", err);
                       return;
                     }
                     console.log("Card Updated Successfully!");
+                    
                   });
             }else{
                 console.log("Add this card to inventory:", listedCard);
@@ -90,8 +99,12 @@ class CardThumbnail extends Component {
                       }
                     }
                   ], function(err, records) {
+                    this.setState({
+                      adding: false
+                    });
+                    
                     if (err) {
-                      console.error(err);
+                      console.error("Create Card Error", err);
                       return;
                     }
                     console.log("Card Creation Complete.");
@@ -99,7 +112,7 @@ class CardThumbnail extends Component {
             }
         
         }, function done(err) {
-            console.log("Base Check complete");
+            console.log("Add card complete", this.state);
             if (err) { console.error(err); return; }
         });
 
@@ -128,8 +141,17 @@ class CardThumbnail extends Component {
               <div className="card-body">
                   <h5 className="card-title">{this.props.card.name}</h5>
                   {/* <p className="card-text">{this.props.card.originalText}</p> */}
-                  <button className="btn btn-primary" onClick={this.addInventory}>Add Card</button>
+                  <button className="btn btn-primary" disabled={this.state.adding} onClick={this.addInventory}>Add Card</button>
+
+                  <div className="spinner">
+                    <div className="rect1"></div>
+                    <div className="rect2"></div>
+                    <div className="rect3"></div>
+                    <div className="rect4"></div>
+                    <div className="rect5"></div>
+                  </div>
               </div>
+
               <ul className="list-group list-group-flush">
                   <li className="list-group-item">Rarity: {this.props.card.rarity}</li>
                   <li className="list-group-item">Set: {this.state.set}</li>

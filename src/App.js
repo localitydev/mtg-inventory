@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 // Custom Components
 import CardThumbnail from "./Components/CardThumbnail";
-console.log("Process Environment:", process.env.REACT_APP_AIRTABLE_APIKEY);
 
 // AirTable Setup
 var Airtable = require('airtable');
@@ -68,10 +67,12 @@ function App() {
                                 <label htmlFor="cardName">Card Name</label>
                                 <input type="text" className="form-control" onChange={(e) => {onInputText(e)}} id="cardName" />
                             </div>
+
                             <div className="form-group mb-2">
                                 <label htmlFor="cardName">Set Name</label>
                                 <input type="text" className="form-control" onChange={(e) => {onSetText(e)}} id="setName" />
                             </div>
+
                             <button type="submit" className="btn btn-primary mb-2">Search</button>
                         </form>
                     </div>
