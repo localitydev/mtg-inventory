@@ -136,14 +136,14 @@ class CardThumbnail extends Component {
 
     render(){
         return(
-          <div className="card">
-              <img className="img-fluid card-img-top" src={this.props.card.imageUrl} alt="" />
+          <div className="card text-center">
+              <img className="img-fluid" src={this.props.card.imageUrl} alt="" />
               <div className="card-body">
                   <h5 className="card-title">{this.props.card.name}</h5>
                   {/* <p className="card-text">{this.props.card.originalText}</p> */}
                   <button className="btn btn-primary" disabled={this.state.adding} onClick={this.addInventory}>Add Card</button>
 
-                  <div className="spinner">
+                  <div className="spinner1">
                     <div className="rect1"></div>
                     <div className="rect2"></div>
                     <div className="rect3"></div>
@@ -151,16 +151,9 @@ class CardThumbnail extends Component {
                     <div className="rect5"></div>
                   </div>
               </div>
-
-              <ul className="list-group list-group-flush">
-                  <li className="list-group-item">Rarity: {this.props.card.rarity}</li>
-                  <li className="list-group-item">Set: {this.state.set}</li>
-                  <li className="list-group-item">Artist: {this.props.card.artist}</li>
-              </ul>
           </div>
         )
-    }
-        
+    }   
 }
 
 export default CardThumbnail; 

@@ -60,30 +60,45 @@ function App() {
             <div className="container">
                 <div className="row">
                     <div className="col">
-                        <h1>Search for card</h1>
-
-                        <form className="form-inline" onSubmit={searchForCard}>
-                            <div className="form-group mb-2">
-                                <label htmlFor="cardName">Card Name</label>
-                                <input type="text" className="form-control" onChange={(e) => {onInputText(e)}} id="cardName" />
-                            </div>
-
-                            <div className="form-group mb-2">
-                                <label htmlFor="cardName">Set Name</label>
-                                <input type="text" className="form-control" onChange={(e) => {onSetText(e)}} id="setName" />
-                            </div>
-
-                            <button type="submit" className="btn btn-primary mb-2">Search</button>
-                        </form>
+                        <h1 className="mb-3 mt-5">Search for card</h1>
                     </div>
                 </div>
+
+                <form className="row" onSubmit={searchForCard}>
+                    <div className="col-8">
+                        <div className="form-group mb-2 row">
+                            <div className="col-2 text-right">
+                                <label htmlFor="cardName">Card Name</label>
+                            </div>
+                            <div className="col-6">
+                                <input type="text" className="form-control" onChange={(e) => {onInputText(e)}} id="cardName" />
+                            </div>
+                        </div>
+
+                        <div className="form-group mb-2 row">
+                            <div className="col-2 text-right">
+                                <label htmlFor="cardName">Set Name</label>
+                            </div>
+
+                            <div className="col-6">
+                                <input type="text" className="form-control" onChange={(e) => {onSetText(e)}} id="setName" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-4">
+                        <button type="submit" className="pr-5 pl-5 btn btn-primary mb-2">Search</button>
+                    </div>
+
+                </form>
+
+                <hr />
 
                 <div className="row">
                 {
                     searchResults.map( (card, index) => {
                         if(card.imageUrl){
                             return(
-                                <div className="col-3" key={index} style={{paddingBottom: 20+'px'}}>
+                                <div className="col-4" key={index} style={{paddingBottom: 20+'px'}}>
                                     <CardThumbnail card={card}/>
                                 </div>
                             )
