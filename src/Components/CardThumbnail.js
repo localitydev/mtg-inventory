@@ -139,9 +139,23 @@ class CardThumbnail extends Component {
           <div className="card text-center">
               <img className="img-fluid" src={this.props.card.imageUrl} alt="" />
               <div className="card-body">
-                  <h5 className="card-title">{this.props.card.name}</h5>
-                  {/* <p className="card-text">{this.props.card.originalText}</p> */}
-                  <button className="btn btn-primary" disabled={this.state.adding} onClick={this.addInventory}>Add Card</button>
+                  <h4 className="card-title">{this.props.card.name}</h4>
+
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">Quantity</label>
+                    <input type="number" step="1" min="1" value="1" onChange={()=>{}}/>
+                  </div>
+
+                  <div class="form-check">
+                    <input type="checkbox" for=""/>
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Foil
+                    </label>
+                  </div>
+
+                  <div>
+                    <button className="btn btn-primary" disabled={this.state.adding} onClick={this.addInventory}>Add Card</button>
+                  </div>
 
                   <div className="spinner1">
                     <div className="rect1"></div>
