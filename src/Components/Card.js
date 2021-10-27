@@ -16,10 +16,95 @@ const Card = (props) => {
 
     // Card Functions
     const addToInventory = () => {
+        console.log("Adding Card(s) to inventory", cardInfo);
+        
+        setAdding(true);
 
+        // TODO - Check for Card in Inventory
+        // Check for existing card
+        base('Inventory').select({
+            fields: ["multiverseid", "quantity"],
+            filterByFormula: "{multiverseid} = " + cardInfo.multiverseid
+        })
+        
+        /** After database retrieval there should be either 1 or no results.
+         * - IF 1 result -> +1 that Card
+         * - ELSE
+         * -    Add card to inventory
+         */
+        .eachPage(function page(cards, fetchNextPage) {
+            // This function (`page`) will get called for each page of cards.
+            
+            console.log("Cards found: ", cards);
+
+            if(cards.length !== 0){
+                // Update card quantity
+                base('Inventory').update([
+                    {
+                      "id": cards[0].id,
+                      "fields": {
+                        "quantity" : cards[0].fields.quantity + 1
+                      }
+                    }
+                  ], function(err, records) {
+                    setAdding(false);
+
+                    if (err) {
+                      console.error("Update Card Error.", err);
+                      return;
+                    }
+                    console.log("Card Updated Successfully!");
+                    
+                  });
+            }else{
+                console.log("Add this card to inventory:", cardInfo);
+
+                // Value of the card's color.
+                var cardInfoColors = (cardInfo.colors) ? cardInfo.colors.join(",") : "" ;
+                var cardInfoColorIdentity = (cardInfo.colorIdentity) ? cardInfo.colorIdentity.join(",") : "" ;
+                var cardInfoTypes = (cardInfo.types) ? cardInfo.types.join(",") : "" ;
+
+                // Add card to inventory
+                base('Inventory').create([
+                    {
+                      "fields": {
+                        "artist": cardInfo.artist,
+                        "cmc": cardInfo.cmc,
+                        "colors": cardInfoColors,
+                        "colorIdentity": cardInfoColorIdentity,
+                        "imageUrl": cardInfo.imageUrl,
+                        "multiverseid": cardInfo.multiverseid,
+                        "manaCost":cardInfo.manaCost,
+                        "name": cardInfo.name,
+                        "quantity": 1,
+                        "setID": cardInfo.set,
+                        "setName": cardInfo.setName,
+                        "type": cardInfo.type,
+                        "types": cardInfoTypes
+                      }
+                    }
+                  ], function(err, records) {
+                    setAdding(false);
+                    
+                    if (err) {
+                      console.error("Create Card Error", err);
+                      return;
+                    }
+                    console.log("Card Creation Complete.");
+                  });
+            }
+        
+        }, function done(err) {
+            console.log("Add card complete", cardInfo);
+            if (err) { console.error(err); return; }
+        });
+
+        // If card found, update quanity
+        // ELSE add Card
     }
 
     // Card Event Listeners
+    
 
 
     // USES
@@ -47,22 +132,19 @@ const Card = (props) => {
                 <img className="img-fluid" src={props.card.imageUrl} alt="" />
                 <div className="card-body">
                     <h5 className="card-title text-left">{props.card.name}</h5>
-                    <p>{cardSet}</p>
+                    <p className="text-right pr-2">{cardSet}</p>
 
-                    <div className="mb-3">
-                        <label for="exampleFormControlInput1" className="form-label">Quantity</label>
-                        <input type="number" step="1" min="1" value="1" onChange={()=>{}}/>
-                    </div>
-
-                    <div className="form-check">
-                        <input type="checkbox" for=""/>
-                        <label className="form-check-label" for="flexCheckDefault">
-                        Foil
-                        </label>
-                    </div>
-
-                    <div>
-                        <button className="btn btn-primary" disabled={adding} onClick={addToInventory}>Add Card</button>
+                    <div style={{position: "absolute", bottom: "20px", width:"100%"}} className="row g-0 justify-content-center align-items-center">
+                        <div className="col-auto p-0">
+                            <input style={{"width":"50px"}} type="number" step="1" min="1" onChange={()=>{}}/>
+                        </div>
+                        <div className="col-auto">
+                            <button className="btn btn-primary" disabled={adding} onClick={addToInventory}>Add Card</button>
+                        </div>
+                        <div className="col-auto p-0">
+                            <input style={{position:"relative", bottom:"-4px", width:"20px", height:"20px"}} type="checkbox" id="isFoil" />
+                            <label htmlFor="isFoil" style={{marginLeft: "2px"}} onChange={()=>{}} className="form-check-label" >Foil</label>
+                        </div>
                     </div>
                 </div>
             </div>
