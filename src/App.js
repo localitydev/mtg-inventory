@@ -2,7 +2,6 @@ import './App.css';
 import { useState } from 'react';
 
 // Custom Components
-import CardThumbnail from "./Components/CardThumbnail";
 import Card from './Components/Card';
 
 // AirTable Setup
@@ -104,7 +103,6 @@ function App() {
                         if(card.imageUrl){
                             return(
                                 <div className="col-4" key={index} style={{paddingBottom: 20+'px'}}>
-                                    {/* <CardThumbnail card={card}/> */}
                                     <Card card={card} />
                                 </div>
                             )
