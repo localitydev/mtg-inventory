@@ -12,6 +12,7 @@ const Card = (props) => {
     // Card Properties (Variables)
         const [cardInfo, setCardInfo] = useState({});
         const [cardSet, setCardSet] = useState("");       // Variable houses Set's full name versus Abbreviation
+        const [cardText, setCardText] = useState({__html: props.card.text});
         const [adding, setAdding] = useState(false);     // State Variable for Adding to Inventory
 
     // Card Functions
@@ -103,15 +104,67 @@ const Card = (props) => {
         // ELSE add Card
     }
 
+    // Card Utilities
+    const renderText = (input) => {
+      console.log(`Render text with images: ${input}`);
+
+      // This function will replace the {T} with proper images of that icon
+      // example text: {T}: Add {C}. If you control an Urza's Power-Plant and an Urza's Tower, add {C}{C} instead.
+
+      let newText = input.replaceAll(/{(.*?)}/g, (match) => {
+        console.log(`Replacing match: ${match}`);
+
+        switch (match) {
+          case "{T}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=tap&type=symbol' />";
+          case "{C}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=c&type=symbol' />";
+          case "{B}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=b&type=symbol' />";
+          case "{U}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=u&type=symbol' />";
+          case "{G}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=g&type=symbol' />";
+          case "{R}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=r&type=symbol' />";
+          case "{W}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=w&type=symbol' />";
+          case "{0}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=0&type=symbol' />";
+          case "{1}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=1&type=symbol' />";
+          case "{2}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=2&type=symbol' />";
+          case "{3}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=3&type=symbol' />";
+          case "{4}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=4&type=symbol' />";
+          case "{5}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=5&type=symbol' />";
+          case "{6}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=6&type=symbol' />";
+          case "{7}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=7&type=symbol' />";
+          case "{8}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=8&type=symbol' />";
+          case "{9}":
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=9&type=symbol' />";
+          default:
+            return match;
+        }
+
+      });
+
+      return {__html: newText};
+    }
+
     // Card Event Listeners
     
 
 
     // USES
     useEffect(() => {
-        // When card is mounted. Take card info and set it.
-        setCardInfo(props.card);
-
+        
         /** Find Set name from SetID
          * - The setID is returned with the card but not the set name.
          * - This will get us the set name to display
@@ -121,18 +174,29 @@ const Card = (props) => {
             console.log(`Full Set Name: `, result);
  
             // Set the state of the card's `Set` to returned value
-            setCardSet(result.set.name);
-         });
+            props.card.setName = result.set.name;
+
+            // When card is mounted. Take card info and set it.
+            setCardInfo(props.card);
+        });        
     })
 
 
     return (
         <React.Fragment>
-            <div className="card text-center">
-                <img className="img-fluid" src={props.card.imageUrl} alt="" />
+            <div className="card text-center" onMouseEnter={()=>{setCardText(renderText(props.card.text))}}>
+                <img className="img-fluid" src={cardInfo.imageUrl} alt="" />
                 <div className="card-body">
-                    <h5 className="card-title text-left">{props.card.name}</h5>
-                    <p className="text-right pr-2">{cardSet}</p>
+                    <h5 className="card-title text-left">{cardInfo.name}</h5>
+                    <p className="text-right pr-2">{cardInfo.setName}</p>
+
+                    <div>
+                      <img src={cardInfo.imageUrl} alt="" width="100" />
+                    </div>
+
+                    <hr />
+
+                    <p dangerouslySetInnerHTML={cardText}></p>
 
                     <div style={{position: "absolute", bottom: "20px", width:"100%"}} className="row g-0 justify-content-center align-items-center">
                         <div className="col-auto p-0">

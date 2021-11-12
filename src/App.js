@@ -102,7 +102,7 @@ function App() {
                     searchResults.map( (card, index) => {
                         if(card.imageUrl){
                             return(
-                                <div className="col-4" key={index} style={{paddingBottom: 20+'px'}}>
+                                <div className="col-sm-4" key={index} style={{paddingBottom: 20+'px'}}>
                                     <Card card={card} />
                                 </div>
                             )
