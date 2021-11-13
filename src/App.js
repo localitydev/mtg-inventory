@@ -36,7 +36,7 @@ function App() {
 // Application Functions
     // Search MTG API for card name in given set
     const searchForCard = function(e){
-        console.log(`Searching for ${searchText} in the set ${setText}`);
+        console.log(`Searching for "${searchText}" in the set "${setText}"`);
         e.preventDefault();
 
         setSearchResults([]);   // Resets the list so cards can be remounted.

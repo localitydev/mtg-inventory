@@ -11,9 +11,14 @@ const Card = (props) => {
 
     // Card Properties (Variables)
         const [cardInfo, setCardInfo] = useState({});
+
+        // Reformatted content
         const [cardSet, setCardSet] = useState("");       // Variable houses Set's full name versus Abbreviation
         const [cardText, setCardText] = useState({__html: props.card.text});
+        
+        // BOOLEAN Statues
         const [adding, setAdding] = useState(false);     // State Variable for Adding to Inventory
+        const [formatted, setFormatted] = useState(false);     // State Variable for Adding to Inventory
 
     // Card Functions
     const addToInventory = () => {
@@ -104,6 +109,29 @@ const Card = (props) => {
         // ELSE add Card
     }
 
+    // Render Card Function
+    const formatCard = () => {
+
+      if(!formatted){
+        // Find Full name for Set ABBR.
+        mtg.set.find(props.card.set)
+        .then(result => {
+          console.log(`Full Set Name: `, result);
+
+          // Set the state of the card's `Set` to returned value
+          props.card.setName = result.set.name;
+
+          // When card is mounted. Take card info and set it.
+          setCardInfo(props.card);
+        });
+
+        // Convert symbol ABBR. to images of that symbol
+        setCardText(renderText(props.card.text));
+
+        setFormatted(true);
+      }
+    }
+
     // Card Utilities
     const renderText = (input) => {
       console.log(`Render text with images: ${input}`);
@@ -165,26 +193,14 @@ const Card = (props) => {
     // USES
     useEffect(() => {
         
-        /** Find Set name from SetID
-         * - The setID is returned with the card but not the set name.
-         * - This will get us the set name to display
-         */
-        mtg.set.find(props.card.set)
-        .then(result => {
-            console.log(`Full Set Name: `, result);
- 
-            // Set the state of the card's `Set` to returned value
-            props.card.setName = result.set.name;
-
-            // When card is mounted. Take card info and set it.
-            setCardInfo(props.card);
-        });        
+      // When component is mounted, set the components data.
+      setCardInfo(props.card);
     })
 
 
     return (
         <React.Fragment>
-            <div className="card text-center" onMouseEnter={()=>{setCardText(renderText(props.card.text))}}>
+            <div className="card text-center" onMouseEnter={formatCard}>
                 <img className="img-fluid" src={cardInfo.imageUrl} alt="" />
                 <div className="card-body">
                     <h5 className="card-title text-left">{cardInfo.name}</h5>
