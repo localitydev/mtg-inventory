@@ -127,7 +127,9 @@ const Card = (props) => {
         });
 
         // Convert symbol ABBR. to images of that symbol
-        setCardText(renderText(props.card.text));
+        if(props.card.hasOwnProperty("text")){
+          setCardText(renderText(props.card.text));
+        }
 
         if(props.card.hasOwnProperty("manaCost")){
           setCardManaCost(renderText(props.card.manaCost));
@@ -147,45 +149,7 @@ const Card = (props) => {
       let newText = input.replaceAll(/{(.*?)}/g, (match) => {
         console.log(`Replacing match: ${match}`);
 
-        switch (match) {
-          case "{T}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=tap&type=symbol' />";
-          case "{C}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=c&type=symbol' />";
-          case "{B}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=b&type=symbol' />";
-          case "{U}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=u&type=symbol' />";
-          case "{G}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=g&type=symbol' />";
-          case "{R}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=r&type=symbol' />";
-          case "{W}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=w&type=symbol' />";
-          case "{0}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=0&type=symbol' />";
-          case "{1}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=1&type=symbol' />";
-          case "{2}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=2&type=symbol' />";
-          case "{3}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=3&type=symbol' />";
-          case "{4}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=4&type=symbol' />";
-          case "{5}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=5&type=symbol' />";
-          case "{6}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=6&type=symbol' />";
-          case "{7}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=7&type=symbol' />";
-          case "{8}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=8&type=symbol' />";
-          case "{9}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=9&type=symbol' />";
-          default:
-            return match;
-        }
-
+        return "<img class='mtgIcon' src='./svg/"+match+".svg' />";
       });
 
       return {__html: newText};

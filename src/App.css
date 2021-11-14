@@ -34,6 +34,15 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 1;
 }
 
+.card .card-body .mtgIcon {
+    width: 18px;
+    height: 18px;
+
+    border: 1px solid #000;
+    border-radius: 100%;
+}
+
+
 .card .card-body .card-title {
     padding-top: 2px;
     padding: 0 0 2px 4px;
