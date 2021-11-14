@@ -15,6 +15,7 @@ const Card = (props) => {
         // Reformatted content
         const [cardSet, setCardSet] = useState("");       // Variable houses Set's full name versus Abbreviation
         const [cardText, setCardText] = useState({__html: props.card.text});
+        const [cardManaCost, setCardManaCost] = useState({__html: props.card.manaCost});
         
         // BOOLEAN Statues
         const [adding, setAdding] = useState(false);     // State Variable for Adding to Inventory
@@ -128,6 +129,10 @@ const Card = (props) => {
         // Convert symbol ABBR. to images of that symbol
         setCardText(renderText(props.card.text));
 
+        if(props.card.hasOwnProperty("manaCost")){
+          setCardManaCost(renderText(props.card.manaCost));
+        }
+
         setFormatted(true);
       }
     }
@@ -144,39 +149,39 @@ const Card = (props) => {
 
         switch (match) {
           case "{T}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=tap&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=tap&type=symbol' />";
           case "{C}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=c&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=c&type=symbol' />";
           case "{B}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=b&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=b&type=symbol' />";
           case "{U}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=u&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=u&type=symbol' />";
           case "{G}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=g&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=g&type=symbol' />";
           case "{R}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=r&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=r&type=symbol' />";
           case "{W}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=w&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=w&type=symbol' />";
           case "{0}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=0&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=0&type=symbol' />";
           case "{1}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=1&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=1&type=symbol' />";
           case "{2}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=2&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=2&type=symbol' />";
           case "{3}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=3&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=3&type=symbol' />";
           case "{4}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=4&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=4&type=symbol' />";
           case "{5}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=5&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=5&type=symbol' />";
           case "{6}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=6&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=6&type=symbol' />";
           case "{7}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=7&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=7&type=symbol' />";
           case "{8}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=8&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=8&type=symbol' />";
           case "{9}":
-            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=medium&name=9&type=symbol' />";
+            return "<img src='https://gatherer.wizards.com/Handlers/Image.ashx?size=small&name=9&type=symbol' />";
           default:
             return match;
         }
@@ -203,7 +208,7 @@ const Card = (props) => {
             <div className="card text-center" onMouseEnter={formatCard}>
                 <img className="img-fluid" src={cardInfo.imageUrl} alt="" />
                 <div className="card-body">
-                    <h5 className="card-title text-left">{cardInfo.name}</h5>
+                    <h6 className="card-title text-left">{cardInfo.name} <span className="pr-1 float-right" dangerouslySetInnerHTML={cardManaCost}></span></h6>
                     <p className="text-right pr-2">{cardInfo.setName}</p>
 
                     <div>
