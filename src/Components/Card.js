@@ -16,6 +16,7 @@ const Card = (props) => {
         const [cardSet, setCardSet] = useState("");       // Variable houses Set's full name versus Abbreviation
         const [cardText, setCardText] = useState({__html: props.card.text});
         const [cardManaCost, setCardManaCost] = useState({__html: props.card.manaCost});
+        const [cardQuantity, setCardQuantity] = useState(1);
         
         // BOOLEAN Statues
         const [adding, setAdding] = useState(false);     // State Variable for Adding to Inventory
@@ -50,11 +51,12 @@ const Card = (props) => {
                     {
                       "id": cards[0].id,
                       "fields": {
-                        "quantity" : cards[0].fields.quantity + 1
+                        "quantity" : cards[0].fields.quantity + cardQuantity
                       }
                     }
                   ], function(err, records) {
                     setAdding(false);
+                    setCardQuantity(1);
 
                     if (err) {
                       console.error("Update Card Error.", err);
@@ -87,17 +89,19 @@ const Card = (props) => {
                         "setID": cardInfo.set,
                         "setName": cardInfo.setName,
                         "type": cardInfo.type,
-                        "types": cardInfoTypes
+                        "types": cardInfoTypes,
+                        "quantity": cardQuantity
                       }
                     }
                   ], function(err, records) {
                     setAdding(false);
+                    setCardQuantity(1);
                     
                     if (err) {
                       console.error("Create Card Error", err);
                       return;
                     }
-                    console.log("Card Creation Complete.");
+                    console.log("New card added to collection.");
                   });
             }
         
@@ -185,7 +189,7 @@ const Card = (props) => {
 
                     <div style={{position: "absolute", bottom: "20px", width:"100%"}} className="row g-0 justify-content-center align-items-center">
                         <div className="col-auto p-0">
-                            <input style={{"width":"50px"}} type="number" step="1" min="1" onChange={()=>{}}/>
+                            <input style={{"width":"50px"}} value={cardQuantity} type="number" step="1" min="1" onChange={(event)=>{setCardQuantity(parseInt  (event.target.value))}}/>
                         </div>
                         <div className="col-auto">
                             <button className="btn btn-primary" disabled={adding} onClick={addToInventory}>Add Card</button>
