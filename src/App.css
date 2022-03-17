@@ -44,7 +44,6 @@ h1, h2, h3, h4, h5, h6 {
 
 
 .card .card-body .card-title {
-    padding-top: 2px;
     padding: 0 0 2px 4px;
     border: 2px solid #5d5b5b;
     border-radius: 0.5em;

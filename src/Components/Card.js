@@ -176,7 +176,7 @@ const Card = (props) => {
             <div className="card text-center" onMouseEnter={formatCard}>
                 <img className="img-fluid" src={cardInfo.imageUrl} alt="" />
                 <div className="card-body">
-                    <h6 className="card-title text-left">{cardInfo.name} <span className="pr-1 float-right" dangerouslySetInnerHTML={cardManaCost}></span></h6>
+                    <h6 className="card-title text-start">{cardInfo.name} <span className="pr-1 float-end" dangerouslySetInnerHTML={cardManaCost}></span></h6>
                     <p className="text-right pr-2">{cardInfo.setName}</p>
 
                     <div>
@@ -193,10 +193,6 @@ const Card = (props) => {
                         </div>
                         <div className="col-auto">
                             <button className="btn btn-primary" disabled={adding} onClick={addToInventory}>Add Card</button>
-                        </div>
-                        <div className="col-auto p-0">
-                            <input style={{position:"relative", bottom:"-4px", width:"20px", height:"20px"}} type="checkbox" id="isFoil" />
-                            <label htmlFor="isFoil" style={{marginLeft: "2px"}} onChange={()=>{}} className="form-check-label" >Foil</label>
                         </div>
                     </div>
                 </div>
