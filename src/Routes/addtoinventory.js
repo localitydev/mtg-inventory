@@ -36,17 +36,16 @@ const AddToInventory = () => {
         console.log(`Searching for "${searchText}" in the set "${setText}"`);
         e.preventDefault();
 
-        setSearchResults([]);   // Resets the list so cards can be remounted.
+        let fetchUrl = `https://api.scryfall.com/cards/search?q=${encodeURI(searchText)}+lang%3Aen&unique=prints`;
 
-        // MTG SDK Search MTG `where` parameters equal values.
-        mtg.card.where({
-            name: searchText,
-            setName: setText
-        }).then(cards => {
-            console.log("Search Results:", cards);
-            setSearchResults(cards);
-            return cards;
-        }).catch((err) => {console.log(err); return err;});
+        fetch(fetchUrl)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    console.log(result);
+                    setSearchResults(result.data);
+                }
+            );
     };
 
     return (
@@ -92,16 +91,11 @@ const AddToInventory = () => {
                 <div className="row">
                 {
                     searchResults.map( (card, index) => {
-                        if(card.imageUrl){
-                            return(
-                                <div className="col-sm-4" key={index} style={{paddingBottom: 20+'px'}}>
-                                    <Card card={card} />
-                                </div>
-                            )
-                        }else{
-                            return(null);
-                        }
-                                                        
+                        return(
+                            <div className="col-sm-3" key={index} style={{paddingBottom: 20+'px'}}>
+                                <Card card={card} />
+                            </div>
+                        )
                     } )
                 }
                 </div>
