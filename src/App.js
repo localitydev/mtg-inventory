@@ -10,8 +10,6 @@ import NotFound from './Routes/notFound';
 
 function App() {
 
-    
-
     return (
         <div className="App">
             <BrowserRouter>
@@ -44,7 +42,7 @@ function App() {
                 <Routes>
                     <Route path='/' element={<h1>Homepage</h1>} />
                     <Route path='add-to-inventory' element={<AddToInventory />} />
-                    <Route path='cardDetails/:multiverseId' element={<CardDetail />} />
+                    <Route path='cardDetail/:multiverseid' element={<CardDetail />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>
             </BrowserRouter>

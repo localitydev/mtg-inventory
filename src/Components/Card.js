@@ -22,6 +22,10 @@ const Card = (props) => {
      * - :: Alt ART cards
      */
 
+    // Setting the detail link to have the Multiverse ID attached
+    // ..First number in the ID array is the card face.
+    setCardLink(cardLink+props.card.multiverse_ids[0]);
+
     if(props.card.card_back_id){
       // Normal MTG Cards
       setImage(props.card.image_uris.normal);

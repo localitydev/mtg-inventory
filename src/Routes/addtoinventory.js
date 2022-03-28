@@ -64,7 +64,7 @@ const AddToInventory = () => {
         console.log(`Searching for "${searchText}" in the set "${setText}"`);
         e.preventDefault();
 
-        let fetchUrl = `https://api.scryfall.com/cards/search?q=${encodeURI(searchText)}+lang%3Aen&unique=unique`;
+        let fetchUrl = `https://api.scryfall.com/cards/search?q=${encodeURI(searchText)}+lang%3Aen&unique=prints`;
 
         fetch(fetchUrl)
             .then(res => res.json())
