@@ -12,6 +12,16 @@ const CardDetail = (props) => {
     const [amount, setAmount] = useState(0);
     const [cardObj, setCardObj] = useState({});
 
+    // Card Mana Cost
+    
+    // Card Image(s)
+    const [cardFace, setCardFace] = useState("");
+    const [cardBack, setCardBack] = useState("");
+    
+    // Card Text (ReRendered)
+
+    // Card P/T or Loyalty (ReRendered)
+
 
 // FUNCTIONS
     const increaseAmount = () => {
@@ -24,9 +34,35 @@ const CardDetail = (props) => {
         }
     }
 
+    const getCardData = async () => {
+        const response = await fetch(
+            `https://api.scryfall.com/cards/multiverse/${params.multiverseid}`
+        ).then(response => response.json())
+        .then((card) => {
+            console.log("getCardData response", card);
+
+            if(card.card_back_id){
+                // Normal MTG Cards
+                setCardFace(card.image_uris.normal);
+                // setManaCost();
+            }else{
+                // Two-Sided MTG Cards
+                setCardFace(card.card_faces[0].image_uris.normal);
+                // setManaCost();
+            }
+            
+            // update the state
+            setCardObj(card);
+        });
+    };
+
+// UTILITY FUNCTIONS
+
+
     // When Component mounts
     useEffect(() => {
         console.log("URL Params", params);
+        getCardData();
         
     }, []);
 
@@ -35,26 +71,24 @@ const CardDetail = (props) => {
             <div className="container">
                 <div className="row">
                     <div className="col-4">
-                        <img src="https://c1.scryfall.com/file/scryfall-cards/large/front/4/0/408be425-b8a6-4c03-b2a6-7ff7bd6555e0.jpg" alt="" className="img-fluid" />
+                        <img className="img-fluid" src={cardFace} />
                     </div>
                     <div className="col-5">
                         <h1 className="card-title h6">
-                            Nahiri, Heir of the Ancients
-                            <span className="card-mana_cost"></span>
+                            {cardObj.name}
+                            <span className="float-end card-mana_cost">{cardObj.mana_cost}</span>
                         </h1>
                         
                         <hr />
                         
                         <p className="card-type">
-                            Legendary Planeswalker — Nahiri
+                            {cardObj.type_line}
                         </p>
 
                         <hr />
                         
-                        <div className="card-desc">
-                            <p>+1: Create a 1/1 white Kor Warrior creature token. You may attach an Equipment you control to it.</p>
-                            <p>−2: Look at the top six cards of your library. You may reveal a Warrior or Equipment card from among them and put it into your hand. Put the rest on the bottom of your library in a random order.</p>
-                            <p>−3: Nahiri, Heir of the Ancients deals damage to target creature or planeswalker equal to twice the number of Equipment you control.</p>
+                        <div className="card-desc" style={{whiteSpace: "break-spaces"}}>
+                            {cardObj.oracle_text}
                         </div>
 
                         <hr />
@@ -66,7 +100,7 @@ const CardDetail = (props) => {
                         <hr />
 
                         <p className="card-artist">
-                            Illustrated by Anna Steinbauer
+                            {cardObj.artist}
                         </p>
                     </div>
                     <div className="col-3">

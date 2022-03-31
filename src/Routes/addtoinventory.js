@@ -76,7 +76,7 @@ const AddToInventory = () => {
             );
     };
 
-    useEffect( () => buildList());
+    useEffect( () => buildList() );
 
     return (
         <React.Fragment>
