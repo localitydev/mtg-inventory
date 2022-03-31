@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Custom Components
 import Card from '../Components/Card';
@@ -13,7 +13,8 @@ const AddToInventory = () => {
     console.log("[ROUTE] Add To Inventory");
     const [searchText, setSearchText] = useState("");           // Inputted Card name
     const [setText, setSetText] = useState("");                 // Inputted Set name
-    const [searchResults, setSearchResults] = useState([]);     // Search Results Array/Container
+    const [searchResults, setSearchResults] = useState({});     // Search Results Array/Container
+    const [searchStatus, setSearchStatus] = useState(0);
 
 // Application Listeners
     // Card Name
@@ -30,24 +31,52 @@ const AddToInventory = () => {
         setSetText(e.target.value);
     };
 
+    const buildList = () => {
+
+        switch(searchResults.object){
+            case "list":
+                console.log(`buildList() :: search results returned a LIST object`);
+
+                return searchResults.data.map( (card, index) => {
+                    return(
+                        <div className="col-sm-3" key={index} style={{paddingBottom: 20+'px'}}>
+                            <Card card={card} />
+                        </div>
+                    )
+                } );
+
+                break;
+            case "error":
+                console.log(`buildList() :: search results returned an ERROR object`);
+                return(<h1>There is an Error.</h1>);
+                break;
+            default:
+                console.log(`buildList() :: default state`);
+                return(<h1>Nothing yet.</h1>)
+                break;
+        }        
+    }
+
 // Application Functions
     // Search MTG API for card name in given set
     const searchForCard = function(e){
+        setSearchResults({});   // RESETS the DOM objects
         console.log(`Searching for "${searchText}" in the set "${setText}"`);
         e.preventDefault();
 
-        setSearchResults([]);   // Resets the list so cards can be remounted.
+        let fetchUrl = `https://api.scryfall.com/cards/search?q=${encodeURI(searchText)}+lang%3Aen&unique=prints`;
 
-        // MTG SDK Search MTG `where` parameters equal values.
-        mtg.card.where({
-            name: searchText,
-            setName: setText
-        }).then(cards => {
-            console.log("Search Results:", cards);
-            setSearchResults(cards);
-            return cards;
-        }).catch((err) => {console.log(err); return err;});
+        fetch(fetchUrl)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    console.log(result);
+                    setSearchResults(result);
+                }
+            );
     };
+
+    useEffect( () => buildList() );
 
     return (
         <React.Fragment>
@@ -91,18 +120,7 @@ const AddToInventory = () => {
             <div className="container">
                 <div className="row">
                 {
-                    searchResults.map( (card, index) => {
-                        if(card.imageUrl){
-                            return(
-                                <div className="col-sm-4" key={index} style={{paddingBottom: 20+'px'}}>
-                                    <Card card={card} />
-                                </div>
-                            )
-                        }else{
-                            return(null);
-                        }
-                                                        
-                    } )
+                    buildList()
                 }
                 </div>
             </div>
