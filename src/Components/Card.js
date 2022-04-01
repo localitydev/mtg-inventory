@@ -24,7 +24,7 @@ const Card = (props) => {
 
     // Setting the detail link to have the Multiverse ID attached
     // ..First number in the ID array is the card face.
-    setCardLink(cardLink+props.card.multiverse_ids[0]);
+    setCardLink(cardLink+props.card.id);
 
     if(props.card.card_back_id){
       // Normal MTG Cards
@@ -40,7 +40,7 @@ const Card = (props) => {
   return (
       <React.Fragment>
           <div className="card text-center">
-              <Link to={cardLink}><img className="img-fluid" src={image} alt="" /></Link>
+              <Link to={cardLink} target="_blank"><img className="img-fluid" src={image} alt="" /></Link>
           </div>
       </React.Fragment>
   )

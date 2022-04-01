@@ -42,7 +42,7 @@ function App() {
                 <Routes>
                     <Route path='/' element={<h1>Homepage</h1>} />
                     <Route path='add-to-inventory' element={<AddToInventory />} />
-                    <Route path='cardDetail/:multiverseid' element={<CardDetail />} />
+                    <Route path='cardDetail/:scryfallId' element={<CardDetail />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>
             </BrowserRouter>
