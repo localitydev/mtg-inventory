@@ -4,17 +4,13 @@ import { useState, useEffect } from "react";
 // Custom Components
 import Card from '../Components/Card';
 
-const mtg = require('mtgsdk');      // MTG SDK
-
-var Airtable = require('airtable');
-var base = new Airtable({apiKey: process.env.REACT_APP_AIRTABLE_APIKEY }).base( process.env.REACT_APP_AIRTABLE_BASE );
-
 const AddToInventory = () => {
     console.log("[ROUTE] Add To Inventory");
     const [searchText, setSearchText] = useState("");           // Inputted Card name
     const [setText, setSetText] = useState("");                 // Inputted Set name
     const [searchResults, setSearchResults] = useState({});     // Search Results Array/Container
-    const [searchStatus, setSearchStatus] = useState(0);
+
+    const [focusInput, setFocusInput] = useState();
 
 // Application Listeners
     // Card Name
@@ -38,22 +34,25 @@ const AddToInventory = () => {
                 console.log(`buildList() :: search results returned a LIST object`);
 
                 return searchResults.data.map( (card, index) => {
-                    return(
-                        <div className="col-sm-3" key={index} style={{paddingBottom: 20+'px'}}>
-                            <Card card={card} />
-                        </div>
-                    )
+                    let releaseYear = new Date(card.released_at).getFullYear();
+                    console.log(`Release Year: ${releaseYear}`);
+                    // if(releaseYear === 1997){
+                        return(
+                            <div className="col-sm-4" key={index} style={{paddingBottom: 20+'px'}}>
+                                <Card card={card} />
+                            </div>
+                        )
+                    // }else{
+                    //     return "";
+                    // }
+                                
                 } );
-
-                break;
             case "error":
                 console.log(`buildList() :: search results returned an ERROR object`);
                 return(<h1>There is an Error.</h1>);
-                break;
             default:
                 console.log(`buildList() :: default state`);
                 return(<h1>Nothing yet.</h1>)
-                break;
         }        
     }
 
@@ -77,8 +76,10 @@ const AddToInventory = () => {
     };
 
     useEffect( () => {
-        buildList()
-    }, [] );
+        if(focusInput){
+            focusInput.focus();
+        }
+    }, [focusInput] );
 
     return (
         <React.Fragment>
@@ -96,7 +97,7 @@ const AddToInventory = () => {
                                 <label htmlFor="cardName">Card Name</label>
                             </div>
                             <div className="col-6">
-                                <input type="text" className="form-control" onChange={(e) => {onInputText(e)}} id="cardName" />
+                                <input type="text" className="form-control" ref={inputEle => setFocusInput(inputEle)} onChange={(e) => {onInputText(e)}} id="cardName" />
                             </div>
                         </div>
 

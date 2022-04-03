@@ -1,4 +1,3 @@
-import { card } from "mtgsdk";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -17,6 +16,7 @@ const CardDetail = (props) => {
     const [cardObj, setCardObj] = useState({});
     const [adding, setAdding] = useState(false);
     const [planeswalker, setPlaneswalker] = useState(false);
+    const [show, setShow] = useState(false);
 
     // Card Mana Cost
     const [manaCost, setManaCost] = useState({__html: ""});
@@ -116,6 +116,7 @@ const CardDetail = (props) => {
                     }
                   ], function(err, records) {
                     setAdding(false);
+                    setShow(true);
                     setAmount(1);
 
                     if (err) {
@@ -148,18 +149,20 @@ const CardDetail = (props) => {
                         "oracleText" : cardObj.oracle_text,
                         "releasedAt" : cardObj.released_at,
                         "rarity" : cardObj.rarity,
-                        "price" : cardObj.prices['usd'],
-                        "priceFoil" : cardObj.prices['usd_foil'],
+                        "price" : parseFloat(cardObj.prices['usd']),
+                        "priceFoil" : parseFloat(cardObj.prices['usd_foil']),
                         "power" : cardObj.power,
                         "toughness" : cardObj.toughness,
                         "loyalty" : cardObj.loyalty,
                         "planeswalker" : planeswalker,
                         "keywords" : cardObj.keywords.join(','),
-                        "oracleTextBack" : cardObj.cardTextBack
+                        "oracleTextBack" : cardObj.cardTextBack,
+                        "artist": cardObj.artist
                       }
                     }
                   ], function(err, records) {
                     setAdding(false);
+                    setShow(true);
                     setAmount(1);
                     
                     if (err) {
@@ -176,8 +179,6 @@ const CardDetail = (props) => {
             if (err) { console.error(err); return; }
         });
 
-        // If card found, update quanity
-        // ELSE add Card
     }
 
 // UTILITY FUNCTIONS
@@ -247,6 +248,17 @@ const CardDetail = (props) => {
                         <p className="card-artist">
                             Illustrated by {cardObj.artist}
                         </p>
+
+                        <hr />
+
+                        <div className="row">
+                            <div className="col">
+                                Price: ${(cardObj.prices) && cardObj.prices.usd || ""}
+                            </div>
+                            <div className="col">
+                                Foil: ${(cardObj.prices) && cardObj.prices.usd_foil || ""}
+                            </div>
+                        </div>
                     </div>
                     <div className="col-3">
                         <div className="px-5 d-flex justify-content-between align-items-center">
@@ -261,10 +273,15 @@ const CardDetail = (props) => {
                             <div>
                                 <button onClick={()=>{increaseAmount()}} className="input-group-text float-end"><i className="bi bi-plus-lg"></i></button>
                             </div>
-                            
                         </div>
+
                         <div className="px-5 d-grid mt-3">
                             <button className={`btn btn-block btn-primary ${(amount)? "": "disabled"}`} onClick={event => addToInventory()}>Add to inventory</button>
+                        </div>
+
+                        <div className={`mt-5 alert alert-success alert-dismissible fade ${((show) && "show")}`} role="alert">
+                            <strong>Card(s) added.</strong>
+                            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={()=>{setShow(false)}}></button>
                         </div>
                     </div>
                 </div>
