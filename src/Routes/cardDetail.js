@@ -259,6 +259,10 @@ const CardDetail = (props) => {
                                 Foil: ${(cardObj.prices) && cardObj.prices.usd_foil || ""}
                             </div>
                         </div>
+
+                        <hr />
+
+                        <p>Released At: {cardObj.released_at}</p>
                     </div>
                     <div className="col-3">
                         <div className="px-5 d-flex justify-content-between align-items-center">
