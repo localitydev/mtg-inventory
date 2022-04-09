@@ -22,7 +22,7 @@ const TwoSidedCard = (props) => {
 
     const [quantity, setQuantity] = useState(1);
     const [adding, setAdding] = useState(false);
-    const [show, setShow] = useState(false);
+    const [show, setShow] = useState("");
     const [planeswalker, setPlaneswalker] = useState(false);
     const [creature, setCreature] = useState(false);
 
@@ -68,7 +68,7 @@ const TwoSidedCard = (props) => {
                     }
                   ], function(err, records) {
                     setAdding(false);
-                    setShow(true);
+                    setShow("show");
                     setQuantity(1);
     
                     if (err) {
@@ -283,9 +283,9 @@ console.log("<TwoSidedCard /> Properties", props.card.card_faces[0]);
                             <button className={`btn btn-block btn-primary`} onClick={event => addToInventory()}>Add to inventory</button>
                         </div>
     
-                        <div className={`mt-5 alert alert-success alert-dismissible fade ${((show) && "show")}`} role="alert">
+                        <div className={`mt-5 alert alert-success alert-dismissible fade ${show}`} role="alert">
                             <strong>Card(s) added.</strong>
-                            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={()=>{setShow(false)}}></button>
+                            <button type="button" className="btn-close" aria-label="Close" onClick={()=>{setShow("")}}></button>
                         </div>
                     </div>
                 </div>
