@@ -106,6 +106,7 @@ const OneSidedCard = (props) => {
                     }
                   ], function(err, records) {
                     setAdding(false);
+                    setShow("show");
                     setQuantity(1);
                     
                     if (err) {
