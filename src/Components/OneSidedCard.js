@@ -174,7 +174,7 @@ console.log("Properties of one-sided-card", props);
                         <hr />
     
                         <p className="card-type">
-                            Set: {card.set_name}
+                            Set: {card.set_name} ({card.set})
                         </p>
     
                         <hr />

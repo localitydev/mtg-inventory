@@ -12,8 +12,13 @@ const TwoSidedCard = (props) => {
     // Card OBJECT
     const [card, setCard] = useState({});
 
-    const [cardFace, setCardFace] = useState();
-    const [cardBack, setCardBack] = useState();
+    const [cardFace, setCardFace] = useState({});
+    const [cardBack, setCardBack] = useState({});
+    const [cardFaceURL, setCardFaceURL] = useState("");
+    const [cardBackURL, setCardBackURL] = useState("");
+    const [colors, setColors] = useState("");
+    const [colorsBack, setColorsBack] = useState("");
+
 
     const [faceManaCost, setFaceManaCost] = useState({__html: ""});
     const [backManaCost, setBackManaCost] = useState({__html: ""});
@@ -35,6 +40,62 @@ const TwoSidedCard = (props) => {
         if(quantity > 1){
             setQuantity(quantity - 1);
         }
+    }
+
+    const createFields = () => {
+        let fields                  = {};
+        fields.artist           = card.artist;
+        fields.cmc              = card.cmc;
+        fields.colorIdentity    = card.color_identity.join(',');
+        fields.keywords         = card.keywords.join(',');
+        fields.name             = card.name;
+        fields.quantity         = quantity;
+        fields.rarity           = card.rarity;
+        fields.releasedAt       = card.released_at;
+        fields.scryfall_id      = card.id;
+        fields.set              = card.set;
+        fields.setName          = card.set_name;
+        fields.price            = parseFloat(card.prices['usd']);
+        fields.priceFoil        = parseFloat(card.prices['usd_foil']);
+        
+        fields.cardFace         = cardFaceURL;
+        fields.cardBack         = cardBackURL;
+        
+
+        // FRONT
+        fields.manaCost         = cardFace.mana_cost;
+        fields.typeLine         = cardFace.type_line;
+        fields.oracleText       = cardFace.oracle_text;
+        fields.colors           = colors;
+
+        if(cardFace.type_line.includes('Creature')){
+            fields.power            = cardFace.power;
+            fields.toughness        = cardFace.toughness;
+        }
+
+        if(cardFace.type_line.includes("Planeswalker")){
+            fields.planeswalker     = true;
+            fields.loyalty          = cardFace.loyalty;
+        }
+
+        // BACK
+        fields.manaCostBack     = cardBack.mana_cost;
+        fields.typeLineBack     = cardBack.type_line;
+        fields.oracleTextBack   = cardBack.oracle_text;
+        
+        fields.colorsBack       = colorsBack;
+
+        if(cardBack.type_line.includes('Creature')){
+            fields.powerBack            = cardBack.power;
+            fields.toughnessBack        = cardBack.toughness;
+        }
+
+        if(cardBack.type_line.includes("Planeswalker")){
+            fields.planeswalkerBack     = true;
+            fields.loyaltyBack          = cardBack.loyalty;
+        }
+
+        return fields;
     }
 
     const addToInventory = () => {
@@ -80,58 +141,8 @@ const TwoSidedCard = (props) => {
                   });
             }else{
                 console.log("Card does not exist in inventory...");
-                console.log(cardFace.type_line.includes('Creature'));
 
-                let fields                  = {};
-                    fields.artist           = card.artist;
-                    fields.cmc              = card.cmc;
-                    fields.colorIdentity    = card.color_identity.join(',');
-                    fields.keywords         = card.keywords.join(',');
-                    fields.name             = card.name;
-                    fields.quantity         = quantity;
-                    fields.rarity           = card.rarity;
-                    fields.releasedAt       = card.released_at;
-                    fields.scryfall_id      = card.id;
-                    fields.set              = card.set;
-                    fields.setName          = card.set_name;
-                    fields.price            = parseFloat(card.prices['usd']);
-                    fields.priceFoil        = parseFloat(card.prices['usd_foil']);
-
-                    // FRONT
-                    fields.manaCost         = cardFace.mana_cost;
-                    fields.typeLine         = cardFace.type_line;
-                    fields.oracleText       = cardFace.oracle_text;
-                    fields.cardFace         = cardFace.image_uris.normal;
-                    fields.colors           = cardFace.colors.join(',');
-
-                    if(cardFace.type_line.includes('Creature')){
-                        fields.power            = cardFace.power;
-                        fields.toughness        = cardFace.toughness;
-                    }
-
-                    if(cardFace.type_line.includes("Planeswalker")){
-                        fields.planeswalker     = true;
-                        fields.loyalty          = cardFace.loyalty;
-                    }
-
-                    // BACK
-                    fields.manaCostBack     = cardBack.mana_cost;
-                    fields.typeLineBack     = cardBack.type_line;
-                    fields.oracleTextBack   = cardBack.oracle_text;
-                    fields.cardBack         = cardBack.image_uris.normal
-                    fields.colorsBack       = cardBack.colors.join(',');
-
-                    if(cardBack.type_line.includes('Creature')){
-                        fields.powerBack            = cardBack.power;
-                        fields.toughnessBack        = cardBack.toughness;
-                    }
-
-                    if(cardBack.type_line.includes("Planeswalker")){
-                        fields.planeswalkerBack     = true;
-                        fields.loyaltyBack          = cardBack.loyalty;
-                    }
-
-                    console.log("Fields Object", fields);
+                let fields = createFields();
 
                 // Add card to inventory
                 base('Inventory').create([
@@ -180,6 +191,22 @@ const TwoSidedCard = (props) => {
         setCardFace(props.card.card_faces[0]);
         setCardBack(props.card.card_faces[1]);
 
+        switch(props.card.layout){
+            case "transform":
+                setCardFaceURL(props.card.card_faces[0].image_uris.normal);
+                setCardBackURL(props.card.card_faces[1].image_uris.normal);
+
+                setColors(cardFace.colors.join(','));
+                setColorsBack(cardBack.colors.join(','));
+                break;
+            case "adventure":
+                setCardFaceURL(props.card.image_uris.normal);
+                setColors(props.card.colors.join(','));
+                break;
+            default:
+                break;
+        }
+
         setFaceManaCost(renderText(props.card.card_faces[0].mana_cost));
         setBackManaCost(renderText(props.card.card_faces[1].mana_cost));
         setOracleTextFace(renderText(props.card.card_faces[0].oracle_text));
@@ -195,7 +222,7 @@ console.log("<TwoSidedCard /> Properties", props.card.card_faces[0]);
             <div className="container">
                 <div className="row">
                     <div className="col-4">
-                        <img className="img-fluid" src={props.card.card_faces[0].image_uris.normal} />
+                        <img className="img-fluid" src={cardFaceURL} />
                     </div>
                     <div className="col-5">
                         <hr style={{border: "3px solid black", opacity: 0.8}} />

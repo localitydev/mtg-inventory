@@ -7,7 +7,7 @@ import Card from '../Components/Card';
 const AddToInventory = () => {
     console.log("[ROUTE] Add To Inventory");
     const [searchText, setSearchText] = useState("");           // Inputted Card name
-    const [setText, setSetText] = useState("");                 // Inputted Set name
+    const [setText, setSetText] = useState("eld");                 // Inputted Set name
     const [searchResults, setSearchResults] = useState({});     // Search Results Array/Container
 
     const [focusInput, setFocusInput] = useState();
@@ -63,7 +63,13 @@ const AddToInventory = () => {
         console.log(`Searching for "${searchText}" in the set "${setText}"`);
         e.preventDefault();
 
-        let fetchUrl = `https://api.scryfall.com/cards/search?q=${encodeURI(searchText)}+lang%3Aen&unique=prints`;
+        let search = searchText;
+
+        if(setText){
+            search = search+" set:"+setText;
+        }
+
+        let fetchUrl = `https://api.scryfall.com/cards/search?q=${encodeURI(search)}+lang%3Aen&unique=prints`;
 
         fetch(fetchUrl)
             .then(res => res.json())
