@@ -7,7 +7,7 @@ import Card from '../Components/Card';
 const AddToInventory = () => {
     console.log("[ROUTE] Add To Inventory");
     const [searchText, setSearchText] = useState("");           // Inputted Card name
-    const [setText, setSetText] = useState("eld");                 // Inputted Set name
+    const [setText, setSetText] = useState("");                 // Inputted Set name
     const [searchResults, setSearchResults] = useState({});     // Search Results Array/Container
 
     const [focusInput, setFocusInput] = useState();

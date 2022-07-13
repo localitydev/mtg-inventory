@@ -40,7 +40,7 @@ const Card = (props) => {
   return (
       <React.Fragment>
           <div className="card text-center">
-              <Link to={cardLink} ><img className="img-fluid" src={image} alt="" /></Link>
+              <Link to={cardLink}><img className="img-fluid" src={image} alt="" /></Link>
           </div>
       </React.Fragment>
   )

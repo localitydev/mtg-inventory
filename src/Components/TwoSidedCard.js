@@ -193,11 +193,12 @@ const TwoSidedCard = (props) => {
 
         switch(props.card.layout){
             case "transform":
+            case "modal_dfc":
                 setCardFaceURL(props.card.card_faces[0].image_uris.normal);
                 setCardBackURL(props.card.card_faces[1].image_uris.normal);
 
-                setColors(cardFace.colors.join(','));
-                setColorsBack(cardBack.colors.join(','));
+                setColors(props.card.card_faces[0].colors.join(','));
+                setColorsBack(props.card.card_faces[1].colors.join(','));
                 break;
             case "adventure":
                 setCardFaceURL(props.card.image_uris.normal);
