@@ -4,7 +4,7 @@ There are several extremely well made inventory apps, but this web application i
 
 ## Goals
 
-* Become more familiar with ReactJS to pursue a fully development role.
+* Become more familiar with ReactJS to pursue a development role.
 * Identify every card I have in my possession.
 * Find the potential worth of every card I own.
 * Grow more knowledgeable in the web development space and grow my interest in web development.
