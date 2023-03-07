@@ -1,4 +1,4 @@
-# Magic: The Gathering - Inventory APP
+# Magic: The Gathering - Inventory APP (WIP)
 
 There are several extremely well made inventory apps, but this web application is a challenge to myself to create something I can store my inventory of MTG cards. Additionally, I want to create a way to display my decks and build decks with the cards I have in my inventory.
 
